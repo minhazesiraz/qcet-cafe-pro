@@ -38,7 +38,7 @@ export default function EnrollPage() {
       if (!res.ok) {
         throw new Error(data.message || "Signup failed");
       } else {
-        router.push("/accounts/login"); // Redirect to login page
+        router.push("/accounts/logon"); // Redirect to login page
         //   router.push(`/verify-email?email=${userData.email}`);
       }
     } catch (error) {

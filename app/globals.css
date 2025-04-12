@@ -1,27 +1,14 @@
 @import "tailwindcss";
 
-/* donors themes */
+/* themes */
 body {
-  background: white;
-  color: black;
+  background: #fff;
+  color: #1f2937;
+  transition: background-color 0.6s, color 0.6s;
 }
-
-/* html.light {
-  color-scheme: light;
-}
-html.dark {
-  color-scheme: dark;
-}
-html.orange {
-  color-scheme: light; treat orange theme like light mode */
-/* } */
 
 html.dark body {
-  background: gray;
-  color: white;
-}
-
-html.orange body {
-  background: orange;
-  color: aliceblue;
+  background: #0f172a;
+  color: #94a3b8;
+  transition: background-color 0.6s, color 0.6s;
 }

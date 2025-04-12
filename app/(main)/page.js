@@ -1,6 +1,6 @@
 "use client";
 
-import ThemeSwitcher from "@/components/ThemeSwitcher";
+import Controls from "@/components/to-switch";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
@@ -30,7 +30,7 @@ export default function HomePage() {
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, quo.
       </p>
-      <ThemeSwitcher />
+      <Controls />
     </>
   );
 }

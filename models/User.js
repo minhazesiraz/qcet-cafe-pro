@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: false,
+      required: true,
       minlength: 6,
       select: false,
     },
@@ -30,36 +30,36 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "https://example.com/default-avatar.jpg",
     },
-    isAccepted: {
-      type: String,
-      default: "off",
-    },
-    emailVerified: {
+    isProve: {
       type: Boolean,
       default: false,
     },
-    verificationToken: {
+    provingToken: {
       type: String,
       default: null,
     },
-    verificationTokenExpiry: {
+    provingTokenExpires: {
       type: Date,
       default: null,
     },
-    resetToken: {
+    provingCode: {
       type: String,
       default: null,
     },
-    resetTokenExpiry: {
+    resettingToken: {
+      type: String,
+      default: null,
+    },
+    resettingTokenExpires: {
       type: Date,
       default: null,
     },
-    verificationCode: {
+    refreshingToken: {
       type: String,
       default: null,
     },
-    refreshToken: {
-      type: String,
+    refreshingTokenExpires: {
+      type: Date,
       default: null,
     },
   },

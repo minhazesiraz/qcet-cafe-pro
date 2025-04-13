@@ -21,10 +21,9 @@ export async function POST(req) {
     name,
     email,
     password: pwHash,
-    isAccepted,
-    // verificationToken,
-    // verificationTokenExpiry,
-    // verificationCode,
+    // provingToken,
+    // provingTokenExpires,
+    // provingCode,
   };
   console.log(userData);
 

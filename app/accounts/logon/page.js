@@ -1,6 +1,7 @@
 "use client";
 
 import { credentialsLogon } from "@/app/actions/accounts";
+import Spinners from "@/components/Spinners";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -91,7 +92,7 @@ export default function LogonPage() {
               Log in to your account
             </h1>
             <p className="text-center mb-4 text-sm">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link
                 href="/accounts/enroll"
                 className="text-blue-500 font-medium hover:text-blue-600"

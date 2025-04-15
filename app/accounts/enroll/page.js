@@ -1,6 +1,7 @@
 "use client";
 
 import Spinners from "@/components/Spinners";
+// import dbConnect from "@/config/db";
 import AccountCreated from "@/modals/account-created";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -37,7 +38,7 @@ export default function EnrollPage() {
     //    email: e.target.email.value,
     //    isAccepted: e.target.isAccepted.value,
     //  };
-    //  console.log(userData);
+    console.log(userData);
 
     if (!userData.name || !userData.email || !userData.password) {
       setLoading(false);
@@ -45,6 +46,8 @@ export default function EnrollPage() {
     }
 
     try {
+      // dbConnect();
+
       const res = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -55,7 +58,7 @@ export default function EnrollPage() {
       setLoading(false);
 
       if (!res.ok) {
-        throw new Error(data.message || "Signup failed");
+        throw new Error(data.error || data.message || "Signup failed");
       } else {
         setShowSuccess(true);
         // You can delay the redirect if you want:
@@ -90,7 +93,7 @@ export default function EnrollPage() {
             </p>
           </div>
 
-          <OnlinePlatforms />
+          <OnlinePlatforms name="Signup" />
 
           <div className="relative flex items-center mb-6">
             <div className="flex-grow border-t" />
@@ -108,6 +111,7 @@ export default function EnrollPage() {
                 placeholder="your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                autoFocus
                 className="peer relative h-10 w-full border-b px-4 text-sm placeholder-transparent outline-none transition-all autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-emerald-500 focus:outline-none invalid:focus:border-pink-500 focus-visible:outline-none disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"
               />
               <label

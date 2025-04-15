@@ -28,9 +28,9 @@ export default function Controls() {
 
   //   className="inline-flex h-0 w-0 translate-y-2 items-center justify-center gap-2 self-center justify-self-center overflow-hidden whitespace-nowrap rounded bg-blue-50 px-6 text-sm font-medium tracking-wide text-blue-500 opacity-0 transition delay-[0.05s] duration-300 hover:bg-blue-100 hover:text-blue-600 focus:bg-blue-200 focus:text-blue-700 focus-visible:outline-none disabled:cursor-not-allowed disabled:border-blue-300 disabled:bg-blue-100 disabled:text-blue-400 disabled:shadow-none group-hover:h-12 group-hover:w-12 group-hover:translate-y-0 group-hover:opacity-100"
 
-  //   className={`${
-  //    currentTheme === "dark" ? "text-red-600" : "text-green-500"
-  //  }`}
+  //    className={`${
+  //     currentTheme === "dark" ? "text-red-600" : "text-green-500"
+  //   }`}
 
   return (
     <>

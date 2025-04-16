@@ -3,36 +3,24 @@
 import { signIn } from "@/auth";
 
 export const credentialsLogon = async (formData) => {
-  try {
-    const response = await signIn("credentials", {
-      email: formData.get("email"),
-      password: formData.get("password"),
-      redirect: false,
-    });
+   try {
+      const response = await signIn("credentials", {
+         email: formData.get("email"),
+         password: formData.get("password"),
+         redirect: false
+      });
 
-    return response;
-  } catch (error) {
-    console.error("Authentication error:", error);
-    throw new Error(error.message || "Authentication failed");
-  }
+      return response;
+   } catch (error) {
+      console.error("Authentication error:", error);
+      throw new Error(error.message || "Authentication failed");
+   }
 };
 
-// import { signIn } from "@/auth";
+export const onlinePlatformsLogin = async (formData) => {
+   const actions = formData.get("actions");
 
-// export async function ceredntialLogin(formData) {
-//     try {
-//        const response = await signIn("credentials", {
-//             email: formData.get("email"),
-//             password: formData.get("password"),
-//             redirect: false
-//         })
-//         return response;
-//     } catch(error) {
-//         throw new Error(error);
-//     }
-// }
+   if (!actions) return;
 
-// export async function doSocialLogin(formData) {
-//     const action = formData.get("action");
-//     await signIn(action, { redirectTo: "/courses"})
-// }
+   await signIn(actions, { redirectTo: "/blogs" });
+};

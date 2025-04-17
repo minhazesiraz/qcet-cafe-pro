@@ -13,6 +13,7 @@ export const auth_config = {
             token.email = user.email;
             token.name = user.name;
             token.isProve = user.isProve;
+            token.avatar = user.avatar;
          }
 
          return token;
@@ -24,6 +25,7 @@ export const auth_config = {
          session.user.email = token.email;
          session.user.name = token.name;
          session.user.isProve = token.isProve;
+         session.user.avatar = token.avatar;
 
          console.log(`returning session: ${JSON.stringify(session)}`);
 

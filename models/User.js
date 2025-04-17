@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema(
       },
       avatar: {
          type: String,
-         default: "https://example.com/default-avatar.jpg"
+         default: "https://i.pravatar.cc/40?img=7"
       },
       isProve: {
          type: Boolean,

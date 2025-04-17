@@ -24,7 +24,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
                console.log("Checking user in the database...");
                const user = await User.findOne({ email: credentials.email })
-                  .select("+password name email role isProve")
+                  .select("+password name email role isProve avatar")
                   .lean();
 
                if (!user) {
@@ -54,7 +54,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                   name: user.name,
                   email: user.email,
                   isProve: user.isProve,
-                  image: user.avatar,
+                  avatar: user.avatar,
                   role: user.role
                };
             } catch (error) {
@@ -94,7 +94,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                name: user.name,
                email: user.email,
                isProve: user.isProve,
-               image: user.avatar,
+               avatar: user.avatar,
                role: user.role
             };
          }
@@ -111,6 +111,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             token.email = user.email;
             token.name = user.name;
             token.isProve = user.isProve;
+            token.avatar = user.avatar;
 
             console.log("updated token in auth.js:", token);
          }
@@ -124,6 +125,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
          session.user.email = token.email;
          session.user.name = token.name;
          session.user.isProve = token.isProve;
+         session.user.avatar = token.avatar;
 
          console.log(`returning session: ${JSON.stringify(session)}`);
 

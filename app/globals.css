@@ -16,53 +16,58 @@ html.dark body {
 /* globals.css - Soft Pastel Colors Version */
 
 body {
-  background-color: #f9fafb; /* Gray-50 - Tailwind: bg-gray-50 */
-  color: #1f2937; /* Gray-800 - Tailwind: text-gray-800 */
+   background-color: #f9fafb; /* Gray-50 - Tailwind: bg-gray-50 */
+   color: #1f2937; /* Gray-800 - Tailwind: text-gray-800 */
 }
 
 html.dark body {
-  background-color: #111827; /* Gray-900 - Tailwind: bg-gray-900 */
-  color: #e5e7eb; /* Gray-200 - Tailwind: text-gray-200 */
+   background-color: #111827; /* Gray-900 - Tailwind: bg-gray-900 */
+   color: #e5e7eb; /* Gray-200 - Tailwind: text-gray-200 */
 }
 
 /* Buttons */
 button {
-  background-color: #38bdf8; /* Sky-400 - Tailwind: bg-sky-400 */
-  color: #ffffff; /* White - Tailwind: text-white */
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem; /* Rounded-lg - Tailwind: rounded-lg */
-  font-weight: bold; /* Font-bold - Tailwind: font-bold */
-  transition: background-color 0.3s;
+   background-color: #38bdf8; /* Sky-400 - Tailwind: bg-sky-400 */
+   color: #ffffff; /* White - Tailwind: text-white */
+   padding: 0.5rem 1rem;
+   border-radius: 0.5rem; /* Rounded-lg - Tailwind: rounded-lg */
+   font-weight: bold; /* Font-bold - Tailwind: font-bold */
+   transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: #0ea5e9; /* Sky-500 - Tailwind: bg-sky-500 */
-  cursor: pointer;
+   background-color: #0ea5e9; /* Sky-500 - Tailwind: bg-sky-500 */
+   cursor: pointer;
 }
 
 button:disabled {
-  background-color: #cbd5e1; /* Slate-300 - Tailwind: bg-slate-300 */
-  cursor: not-allowed;
+   background-color: #cbd5e1; /* Slate-300 - Tailwind: bg-slate-300 */
+   cursor: not-allowed;
 }
 
 /* Dark mode buttons */
 html.dark button {
-  background-color: #7dd3fc; /* Sky-300 - Tailwind: bg-sky-300 */
-  color: #1e293b; /* Slate-800 - Tailwind: text-slate-800 */
+   background-color: #7dd3fc; /* Sky-300 - Tailwind: bg-sky-300 */
+   color: #1e293b; /* Slate-800 - Tailwind: text-slate-800 */
 }
 
 html.dark button:hover {
-  background-color: #38bdf8; /* Sky-400 - Tailwind: bg-sky-400 */
+   background-color: #38bdf8; /* Sky-400 - Tailwind: bg-sky-400 */
 }
 
 html.dark button:disabled {
-  background-color: #475569; /* Slate-600 - Tailwind: bg-slate-600 */
+   background-color: #475569; /* Slate-600 - Tailwind: bg-slate-600 */
 }
 
 a {
-  color: #2b7fff;
+   color: #2b7fff;
 }
 
 a:hover {
-  color: #155dfc;
+   color: #155dfc;
+}
+
+.unset-button {
+   all: unset;
+   cursor: pointer;
 }

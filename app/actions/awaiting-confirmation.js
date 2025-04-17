@@ -66,18 +66,24 @@ export async function againIsProveLinks(email) {
       // const token = Math.random().toString(36).slice(2);
       // const expiry = Date.now() + 10 * 60 * 1000; // 10 min
 
-      // https://chatgpt.com/c/67ffa3bf-4f7c-8007-b882-9169355f77c8
-      // solve this
+      console.log("Updating user with email:", email);
       const user = await User.findOneAndUpdate(
          { email },
          {
-            email,
-            provingCode,
-            provingToken,
-            provingTokenExpires
+            $set: {
+               provingCode,
+               provingToken,
+               provingTokenExpires
+            }
          },
-         { upsert: true, new: true }
+         // don't use upsert if you don't want to create a new user
+         //  { upsert: true, new: true }
+         { new: true }
       );
+
+      if (!user) {
+         return { success: false, message: "User not found" };
+      }
 
       // Simulate sending email
       console.log(

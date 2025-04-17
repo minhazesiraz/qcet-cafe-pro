@@ -26,8 +26,9 @@ export default function AwaitingConfirmationPage() {
       if (!provingToken) return;
       startTransition(async () => {
          const res = await verifyEmailByToken(provingToken);
+         console.log("awaiting-confirmation: token", res);
          setMessage(res.message || res.error);
-         if (res.success) {
+         if (res?.success) {
             await signOut({ callbackUrl: "/accounts/logon" });
          }
       });
@@ -41,17 +42,15 @@ export default function AwaitingConfirmationPage() {
 
       startTransition(async () => {
          const res = await verifyEmailByCode(email, provingCode);
+         console.log("awaiting-confirmation: code", res);
          setMessage(res.message || res.error);
-         if (res.success) {
+         if (res?.success) {
             await signOut({ callbackUrl: "/accounts/logon" });
          }
       });
    };
 
    const resendingProvingLinks = async () => {
-      // solve this
-      // !email return
-      // https://chatgpt.com/c/67ffa3bf-4f7c-8007-b882-9169355f77c8
       const response = await againIsProveLinks(email);
    };
 

@@ -99,5 +99,36 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             };
          }
       })
-   ]
+   ],
+   session: {
+      strategy: "jwt"
+   },
+   callbacks: {
+      async jwt({ token, user, account }) {
+         if (user) {
+            token.id = user.id;
+            token.role = user.role;
+            token.email = user.email;
+            token.name = user.name;
+            token.isProve = user.isProve;
+
+            console.log("updated token in auth.js:", token);
+         }
+
+         return token;
+      },
+
+      async session({ session, token }) {
+         session.user.id = token.id;
+         session.user.role = token.role;
+         session.user.email = token.email;
+         session.user.name = token.name;
+         session.user.isProve = token.isProve;
+
+         console.log(`returning session: ${JSON.stringify(session)}`);
+
+         return session;
+      }
+   },
+   secret: process.env.NEXTAUTH_SECRET
 });

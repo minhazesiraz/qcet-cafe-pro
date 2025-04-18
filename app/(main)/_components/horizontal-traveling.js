@@ -1,14 +1,29 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useState } from "react";
-import DropdownIcon from "./drop-down-menu";
+import PulldownTraveling from "./drop-down-menu";
 
 export default function HorizontalTraveling() {
    const [isToggleOpen, setIsToggleOpen] = useState(false);
-   const { data: session } = useSession();
+   const { data: session, status } = useSession();
+
+   if (status === "loading") {
+      return (
+         <div className="min-h-screen flex items-center justify-center">
+            <p className="text-gray-500">Loading...</p>
+         </div>
+      );
+   }
 
    const user = session?.user;
+
+   const horizontalLinks = [
+      { name: "Blogs", href: "/blogs" },
+      { name: "Planning", href: "/planing" },
+      { name: "About me", href: "/about-me" }
+   ];
 
    return (
       <>
@@ -90,37 +105,18 @@ export default function HorizontalTraveling() {
                            : "invisible opacity-0"
                      }`}
                   >
-                     <li role="none" className="flex items-stretch">
-                        <a
-                           role="menuitem"
-                           aria-haspopup="false"
-                           className="flex items-center gap-2 py-4 transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 focus:outline-none focus-visible:outline-none lg:px-8"
-                           href="javascript:void(0)"
-                        >
-                           <span>Blog</span>
-                        </a>
-                     </li>
-                     <li role="none" className="flex items-stretch">
-                        <a
-                           role="menuitem"
-                           aria-current="page"
-                           aria-haspopup="false"
-                           className="flex items-center gap-2 py-4 text-emerald-500 transition-colors duration-300 hover:text-emerald-600 focus:text-emerald-600 focus:outline-none focus-visible:outline-none lg:px-8"
-                           href="javascript:void(0)"
-                        >
-                           <span>Planning</span>
-                        </a>
-                     </li>
-                     <li role="none" className="flex items-stretch">
-                        <a
-                           role="menuitem"
-                           aria-haspopup="false"
-                           className="flex items-center gap-2 py-4 transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 focus:outline-none focus-visible:outline-none lg:px-8"
-                           href="javascript:void(0)"
-                        >
-                           <span>About me</span>
-                        </a>
-                     </li>
+                     {horizontalLinks.map((link, i) => (
+                        <li key={i} role="none" className="flex items-stretch">
+                           <Link
+                              href={link.href}
+                              className="flex items-center gap-2 py-4 transition-colors duration-300 hover:text-emerald-500 focus:text-emerald-600 focus:outline-none focus-visible:outline-none lg:px-8"
+                              role="menuitem"
+                              aria-label={link.name}
+                           >
+                              {link.name}
+                           </Link>
+                        </li>
+                     ))}
                   </ul>
                   <div className="ml-auto flex items-center px-6 lg:ml-0 lg:p-0">
                      {/*        <!-- Avatar --> */}
@@ -141,7 +137,7 @@ export default function HorizontalTraveling() {
                         //       <span className="sr-only"> 7 new emails </span>
                         //    </span>
                         // </a>
-                        <DropdownIcon />
+                        <PulldownTraveling session={session} />
                      ) : (
                         <p>Login</p>
                      )}

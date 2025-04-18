@@ -1,5 +1,6 @@
 "use client";
 
+import { hasAccess } from "@/lib/permissions";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,17 +17,27 @@ import {
 
 export default function VerticalTraveling() {
    const [isSideNavOpen, setIsSideNavOpen] = useState(false);
-   const { data: session } = useSession();
+   const { data: session, status } = useSession();
 
-   const navLinks = [
+   if (status === "loading") {
+      return (
+         <div className="min-h-screen flex items-center justify-center">
+            <p className="text-gray-500">Loading...</p>
+         </div>
+      );
+   }
+
+   const verticalLinks = [
       {
          label: "Dashboard",
          path: "/dashboard",
+         admin: true,
          icon: LuLayoutDashboard
       },
       {
          label: "Messages",
          path: "/messages",
+         moderator: true,
          icon: LuMessageSquare,
          badge: 2
       },
@@ -108,12 +119,9 @@ export default function VerticalTraveling() {
                   >
                      <Image
                         // src="https://i.pravatar.cc/40?img=7"
-                        src={
-                           session?.user?.avatar ||
-                           "https://example.com/default-avatar.jpg"
-                        }
-                        alt={session?.user?.name || "User Avatar"}
-                        title={session?.user?.name || "User Avatar"}
+                        src={session?.user?.avatar}
+                        alt={session?.user?.name}
+                        title={session?.user?.name}
                         width={48}
                         height={48}
                         className="max-w-full rounded-full"
@@ -138,29 +146,31 @@ export default function VerticalTraveling() {
             >
                <div>
                   <ul className="flex flex-1 flex-col gap-1 py-3">
-                     {navLinks.map((link) => (
-                        <li key={link.path} className="px-3">
-                           <a
-                              href={link.path}
-                              className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50"
-                           >
-                              <link.icon className="h-5 w-5" />
-                              <span className="truncate text-sm">
-                                 {link.label}
-                              </span>
-
-                              {link.badge && (
-                                 <span className="ml-auto inline-flex items-center justify-center rounded-full bg-pink-100 px-2 text-xs text-pink-500">
-                                    {link.badge}
-                                    <span className="sr-only">
-                                       {" "}
-                                       new notifications
-                                    </span>
+                     {verticalLinks
+                        .filter((link) => hasAccess(link, session?.user?.role))
+                        .map((link) => (
+                           <li key={link.path} className="px-3">
+                              <a
+                                 href={link.path}
+                                 className="flex items-center gap-3 rounded p-3 text-slate-700 transition-colors hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50"
+                              >
+                                 <link.icon className="h-5 w-5" />
+                                 <span className="truncate text-sm">
+                                    {link.label}
                                  </span>
-                              )}
-                           </a>
-                        </li>
-                     ))}
+
+                                 {link.badge && (
+                                    <span className="ml-auto inline-flex items-center justify-center rounded-full bg-pink-100 px-2 text-xs text-pink-500">
+                                       {link.badge}
+                                       <span className="sr-only">
+                                          {" "}
+                                          new notifications
+                                       </span>
+                                    </span>
+                                 )}
+                              </a>
+                           </li>
+                        ))}
                   </ul>
                </div>
                <div>

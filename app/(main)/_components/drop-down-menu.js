@@ -1,41 +1,49 @@
 "use client";
 
+import { hasAccess } from "@/lib/permissions";
 import { useEffect, useRef, useState } from "react";
 import { LuGitBranch, LuLayoutDashboard, LuSettings } from "react-icons/lu";
 
-export default function DropdownIcon(props) {
+export default function PulldownTraveling({ session }) {
    const [isOpen, setIsOpen] = useState(false);
    const [currentItem, setCurrentItem] = useState(0);
    const wrapperRef = useRef(null);
 
-   const navigationItems = [
+   const pulldownLinks = [
       {
-         linkName: "Dashboard",
+         label: "Dashboard",
+         path: "/dashboard",
+         admin: true,
          icon: LuLayoutDashboard,
-         sortDescription: "Quick overview of all basic metrics and settings"
+         description: "Quick overview of all basic metrics and settings"
       },
       {
-         linkName: "Metrics and analytics",
+         label: "Metrics and analytics",
+         path: "/metrics-and-analytics",
+         moderator: true,
          icon: LuLayoutDashboard,
-         sortDescription: "Detailed analytic data reviews management"
+         description: "Detailed analytic data reviews management"
       },
       { separator: true },
       {
-         linkName: "Multi-Channel Funnels overview",
+         label: "Multi-Channel Funnels overview",
+         path: "/multi-channel-funnels-overview",
          icon: LuGitBranch,
-         sortDescription:
+         description:
             "Generated from conversion paths, the sequences of interactions"
       },
       {
-         linkName: "User settings",
+         label: "User settings",
+         path: "/user-settings",
          icon: LuSettings,
-         sortDescription:
+         description:
             "User settings allow you to configure your email preferences"
       },
       {
-         linkName: "User Profile",
+         label: "User Profile",
+         path: "/user-profile",
          icon: LuLayoutDashboard,
-         sortDescription:
+         description:
             "A collection of settings and information about your account"
       }
    ];
@@ -64,10 +72,10 @@ export default function DropdownIcon(props) {
          e.preventDefault();
          switch (e.keyCode) {
             case 40: // down
-               if (currentItem === navigationItems.length - 1) {
+               if (currentItem === pulldownLinks.length - 1) {
                   setCurrentItem(0);
                } else {
-                  if (navigationItems[currentItem + 1]?.separator) {
+                  if (pulldownLinks[currentItem + 1]?.separator) {
                      setCurrentItem(currentItem + 2);
                   } else {
                      setCurrentItem(currentItem + 1);
@@ -76,9 +84,9 @@ export default function DropdownIcon(props) {
                break;
             case 38: // up
                if (currentItem === 0) {
-                  setCurrentItem(navigationItems.length - 1);
+                  setCurrentItem(pulldownLinks.length - 1);
                } else {
-                  if (navigationItems[currentItem - 1]?.separator) {
+                  if (pulldownLinks[currentItem - 1]?.separator) {
                      setCurrentItem(currentItem - 2);
                   } else {
                      setCurrentItem(currentItem - 1);
@@ -137,49 +145,107 @@ export default function DropdownIcon(props) {
                </span>
             </a>
          </button>
-
-         <ul
+         {/* <ul
             className={`${
                isOpen ? "flex" : "hidden"
             } absolute top-full z-10 mt-1 w-72 list-none flex-col rounded bg-white py-2 shadow-md shadow-slate-500/10`}
          >
-            {navigationItems.map((item, index) => {
-               if (item.separator) {
+            {pulldownLinks.map((link, i) => {
+               if (link.separator) {
                   return (
                      <li
-                        key={index}
+                        key={i}
                         role="separator"
                         className="border-b border-slate-200"
                      ></li>
                   );
                }
 
-               const Icon = item.icon;
+               const Icon = link.icon;
 
                return (
-                  <li key={index}>
+                  <li key={i}>
                      <a
                         className={`${
-                           index === currentItem
+                           i === currentItem
                               ? "bg-emerald-50 text-emerald-500"
                               : "bg-none text-slate-500"
                         } flex items-start gap-2 p-2 px-5 transition-colors duration-300 hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 focus:text-emerald-600`}
-                        href="#"
-                        aria-current={index === currentItem ? "page" : "false"}
+                        href={link.path}
+                        aria-current={i === currentItem ? "page" : "false"}
                      >
                         <Icon className="w-5 h-5 mt-1 flex-shrink-0" />
                         <span className="flex flex-col gap-1 overflow-hidden whitespace-nowrap">
                            <span className="leading-5 truncate">
-                              {item.linkName}
+                              {link.label}
                            </span>
                            <span className="text-sm whitespace-normal opacity-70">
-                              {item.sortDescription}
+                              {link.description}
                            </span>
                         </span>
                      </a>
                   </li>
                );
             })}
+         </ul> */}
+         <ul
+            className={`${
+               isOpen ? "flex" : "hidden"
+            } absolute top-full z-10 mt-1 w-72 list-none flex-col rounded bg-white py-2 shadow-md shadow-slate-500/10`}
+         >
+            {pulldownLinks
+               //  .filter((link) => {
+               //     if (link.separator) return true;
+
+               //     const role = session?.user?.role;
+
+               //     // Admin-only
+               //     if (link.admin && role !== "admin") return false;
+
+               //     // Moderator-only
+               //     if (link.moderator && !["admin", "moderator"].includes(role))
+               //        return false;
+
+               //     return true; // Show by default
+               //  })
+               .filter((link) => hasAccess(link, session?.user?.role))
+               .map((link, i) => {
+                  if (link.separator) {
+                     return (
+                        <li
+                           key={i}
+                           role="separator"
+                           className="border-b border-slate-200"
+                        ></li>
+                     );
+                  }
+
+                  const Icon = link.icon;
+
+                  return (
+                     <li key={i}>
+                        <a
+                           className={`${
+                              i === currentItem
+                                 ? "bg-emerald-50 text-emerald-500"
+                                 : "bg-none text-slate-500"
+                           } flex items-start gap-2 p-2 px-5 transition-colors duration-300 hover:bg-emerald-50 hover:text-emerald-500 focus:bg-emerald-50 focus:text-emerald-600`}
+                           href={link.path}
+                           aria-current={i === currentItem ? "page" : "false"}
+                        >
+                           <Icon className="w-5 h-5 mt-1 flex-shrink-0" />
+                           <span className="flex flex-col gap-1 overflow-hidden whitespace-nowrap">
+                              <span className="leading-5 truncate">
+                                 {link.label}
+                              </span>
+                              <span className="text-sm whitespace-normal opacity-70">
+                                 {link.description}
+                              </span>
+                           </span>
+                        </a>
+                     </li>
+                  );
+               })}
          </ul>
       </div>
    );

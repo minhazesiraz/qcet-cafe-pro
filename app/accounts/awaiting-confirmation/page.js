@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { Suspense, useEffect, useState, useTransition } from "react";
 // import { verifyEmailByToken, verifyEmailByCode } from "@/app/actions/verify-email-actions";
 import {
    againIsProveLinks,
@@ -10,7 +10,7 @@ import {
 } from "@/app/actions/awaiting-confirmation";
 import { signOut } from "next-auth/react";
 
-export default function AwaitingConfirmationPage() {
+function AwaitingConfirmationPage() {
    const router = useRouter();
    const searchParams = useSearchParams();
    const provingToken = searchParams.get("provingToken");
@@ -90,5 +90,13 @@ export default function AwaitingConfirmationPage() {
             {message && <p className="mt-4 text-sm text-gray-700">{message}</p>}
          </div>
       </>
+   );
+}
+
+export default function AwaitingConfirmation() {
+   return (
+      <Suspense fallback={<p>Loading...</p>}>
+         <AwaitingConfirmationPage />
+      </Suspense>
    );
 }

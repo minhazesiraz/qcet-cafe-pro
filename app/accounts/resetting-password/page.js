@@ -3,9 +3,9 @@
 import { resettingPassword } from "@/app/actions/forgot-password-actions";
 import ForgotPassword from "@/modals/forgot-password";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
-export default function ResetPasswordPage() {
+function ResetPasswordPage() {
    const [showPassword, setShowPassword] = useState(false);
    const [message, setMessage] = useState(null);
    const [error, setError] = useState(null);
@@ -120,5 +120,13 @@ export default function ResetPasswordPage() {
          />
          {/* {message && <p>{message}</p>} */}
       </>
+   );
+}
+
+export default function ResetPassword() {
+   return (
+      <Suspense fallback={<p>Loading...</p>}>
+         <ResetPasswordPage />
+      </Suspense>
    );
 }

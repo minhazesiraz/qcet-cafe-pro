@@ -22,6 +22,13 @@ const nextConfig = {
             // port: '',
             // pathname: '/account123/**',
             // search: '',
+         },
+         {
+            protocol: "https",
+            hostname: "i.ibb.co.com"
+            // port: '',
+            // pathname: '/account123/**',
+            // search: '',
          }
       ]
    }

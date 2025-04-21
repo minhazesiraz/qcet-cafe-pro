@@ -14,7 +14,7 @@ export async function generateMetadata({ params }) {
    const title = blog.title;
    const description = blog.content.slice(0, 160);
    const image = blog.thumbnail || "https://picsum.photos/id/1081/800/600";
-   const url = `https://yourdomain.com/blogs/${params.slug}`; // 🔁 update with your domain
+   const url = `https://qcet-cafe-pro.vercel.app/blogs/${params.slug}`;
 
    return {
       title,

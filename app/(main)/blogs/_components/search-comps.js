@@ -19,6 +19,7 @@ export default function Search_Comps({
       if (search === "") {
          inputRef.current?.focus();
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [search]);
 
    //  useEffect(() => {

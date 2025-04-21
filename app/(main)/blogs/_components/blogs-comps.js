@@ -62,6 +62,7 @@ export default function Blogs_Comps() {
 
    useEffect(() => {
       loadBlogs();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [page, limit]);
 
    //  useEffect(() => {

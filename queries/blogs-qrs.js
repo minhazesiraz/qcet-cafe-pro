@@ -35,3 +35,30 @@ export async function getBlogs({ page = 1, limit = 5, search = "" }) {
       total
    };
 }
+
+export async function getBlogBySlug(slug) {
+   await dbConnect();
+
+   const blog = await Blog.findOne({ slug, published: true })
+      .select([
+         "title",
+         "content",
+         "author",
+         "tags",
+         "published",
+         "thumbnail",
+         "slug",
+         "createdAt"
+      ])
+      .populate({
+         path: "author",
+         model: User,
+         select: ["name", "email", "avatar"],
+         match: { _id: { $ne: null } }
+      })
+      .lean();
+
+   console.log("Fetched Blog:", blog); // Log the result for debugging
+
+   return blog;
+}

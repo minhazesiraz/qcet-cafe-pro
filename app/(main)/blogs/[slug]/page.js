@@ -50,7 +50,7 @@ export default async function BlogsPage({ params }) {
    const { slug } = await params;
    //  const slug = params?.slug;
    const blog = await getBlogBySlug(slug);
-
+   console.log("blog - slug", blog);
    if (!blog) {
       return <h1>Blog not found</h1>;
    }

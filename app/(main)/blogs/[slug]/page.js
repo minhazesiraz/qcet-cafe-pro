@@ -2,7 +2,11 @@ import { getBlogBySlug } from "@/queries/blogs-qrs";
 import Image from "next/image";
 
 export async function generateMetadata({ params }) {
-   const blog = await getBlogBySlug(params.slug);
+   //  const slug = params?.slug;
+
+   const { slug } = await params;
+
+   const blog = await getBlogBySlug(slug);
 
    if (!blog) {
       return {
@@ -14,7 +18,7 @@ export async function generateMetadata({ params }) {
    const title = blog.title;
    const description = blog.content.slice(0, 160);
    const image = blog.thumbnail || "https://picsum.photos/id/1081/800/600";
-   const url = `https://qcet-cafe-pro.vercel.app/blogs/${params.slug}`;
+   const url = `https://qcet-cafe-pro.vercel.app/blogs/${slug}`;
 
    return {
       title,
@@ -43,7 +47,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function BlogsPage({ params }) {
-   const { slug } = params;
+   const { slug } = await params;
+   //  const slug = params?.slug;
    const blog = await getBlogBySlug(slug);
 
    if (!blog) {

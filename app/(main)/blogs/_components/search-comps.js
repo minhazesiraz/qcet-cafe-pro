@@ -1,8 +1,37 @@
 "use client";
 
-export default function Search_Comps({ search, setSearch, onSearch, loading }) {
+import { useEffect } from "react";
+
+export default function Search_Comps({
+   inputRef,
+   search,
+   setSearch,
+   onSearch,
+   loading
+}) {
    const handleKeyDown = (e) => {
       if (e.key === "Enter") {
+         onSearch();
+      }
+   };
+
+   useEffect(() => {
+      if (search === "") {
+         inputRef.current?.focus();
+      }
+   }, [search]);
+
+   //  useEffect(() => {
+   //     if (search === "") {
+   //        inputRef.current?.focus();
+   //     }
+   //  }, [search, inputRef]);
+
+   const handleChange = (e) => {
+      const value = e.target.value;
+      setSearch(value);
+
+      if (value.trim() === "") {
          onSearch();
       }
    };
@@ -10,11 +39,10 @@ export default function Search_Comps({ search, setSearch, onSearch, loading }) {
    return (
       <div className="relative my-6">
          <input
-            id="id-s03"
+            ref={inputRef}
             type="search"
-            name="id-s03"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={handleChange}
             onKeyDown={handleKeyDown}
             placeholder="Search here"
             aria-label="Search content"
@@ -22,7 +50,6 @@ export default function Search_Comps({ search, setSearch, onSearch, loading }) {
             disabled={loading}
          />
 
-         {/* Search Icon or Spinner */}
          {loading ? (
             <svg
                className="absolute right-4 top-2.5 h-5 w-5 animate-spin text-slate-400"

@@ -1,8 +1,9 @@
 "use client";
 
 import { getBlogs } from "@/queries/blogs-qrs";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CardOfBlogs from "./card-of-blogs";
+import Pagination_Comps from "./pagination-comps";
 import Search_Comps from "./search-comps";
 
 export default function Blogs_Comps() {
@@ -13,42 +14,93 @@ export default function Blogs_Comps() {
    const [total, setTotal] = useState(0);
    const [loading, setLoading] = useState(false);
 
-   useEffect(() => {
-      const loadingBlogs = async () => {
-         const data = await getBlogs({ page, limit, search });
+   const inputRef = useRef(null); // 👈 Input reference moved here
 
-         if (data) {
-            console.log(data.blogs);
-            setBlogs(data.blogs);
-            setTotal(data.total);
-         }
-      };
-      loadingBlogs();
-   }, [limit, page, search]);
-
-   const onSearch = async () => {
+   const loadBlogs = async ({ newPage = page, newSearch = search } = {}) => {
       setLoading(true);
-      setPage(1);
-      await loadingBlogs();
+      const data = await getBlogs({
+         page: newPage,
+         limit,
+         search: newSearch
+      });
+
+      if (data) {
+         setBlogs(data.blogs);
+         setTotal(data.total);
+      }
+
       setLoading(false);
+
+      // ✅ Refocus input after data loads
+      setTimeout(() => {
+         inputRef.current?.focus();
+      }, 50);
    };
+
+   //  const loadBlogs = useCallback(
+   //     async ({ newPage = page, newSearch = search } = {}) => {
+   //        setLoading(true);
+   //        const data = await getBlogs({
+   //           page: newPage,
+   //           limit,
+   //           search: newSearch
+   //        });
+
+   //        if (data) {
+   //           setBlogs(data.blogs);
+   //           setTotal(data.total);
+   //        }
+
+   //        setLoading(false);
+
+   //        setTimeout(() => {
+   //           inputRef.current?.focus();
+   //        }, 50);
+   //     },
+   //     [page, limit, search]
+   //  );
+
+   useEffect(() => {
+      loadBlogs();
+   }, [page, limit]);
+
+   //  useEffect(() => {
+   //     loadBlogs();
+   //  }, [loadBlogs]);
+
+   const onSearch = () => {
+      setPage(1);
+      loadBlogs({ newPage: 1, newSearch: search.trim() });
+   };
+
+   //  const onSearch = useCallback(() => {
+   //     setPage(1);
+   //     loadBlogs({ newPage: 1, newSearch: search.trim() });
+   //  }, [search, loadBlogs]);
 
    return (
       <>
-         {/* search */}
          <Search_Comps
+            inputRef={inputRef} // 👈 Pass ref
             search={search}
             setSearch={setSearch}
             onSearch={onSearch}
             loading={loading}
          />
 
-         {/* blogs */}
          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {blogs.map((blog) => (
                <CardOfBlogs key={blog._id} blog={blog} />
             ))}
          </div>
+
+         <Pagination_Comps
+            page={page}
+            setPage={setPage}
+            totalPages={Math.ceil(total / limit)}
+            setLimit={setLimit}
+            limit={limit}
+         />
       </>
    );
 }

@@ -1,5 +1,6 @@
 import { getBlogBySlug } from "@/queries/blogs-qrs";
 import Image from "next/image";
+import Link from "next/link";
 
 export async function generateMetadata({ params }) {
    //  const slug = params?.slug;
@@ -89,14 +90,14 @@ export default async function BlogsPage({ params }) {
                </p>
             </div>
             <div className="mt-4">
-               <a
-                  href={`https://www.facebook.com/sharer/sharer.php?u=https://ghor-of-code.vercel.app/blogs/${blog.slug}`}
+               <Link
+                  href={`https://www.facebook.com/sharer/sharer.php?u=https://qcet-cafe-pro.vercel.app/blogs/${blog?.slug}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700"
                >
                   Share on Facebook
-               </a>
+               </Link>
             </div>
          </div>
       </>

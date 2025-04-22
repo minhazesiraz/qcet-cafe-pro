@@ -1,25 +1,35 @@
 "use client";
 
 import { hasAccess } from "@/lib/permissions";
-import { useEffect, useRef, useState } from "react";
+import { signOut, useSession } from "next-auth/react";
+import { useRef, useState } from "react";
 import { LuGitBranch, LuLayoutDashboard, LuSettings } from "react-icons/lu";
 
-export default function PulldownTraveling({ session }) {
+export default function PulldownTraveling() {
    const [isOpen, setIsOpen] = useState(false);
    const [currentItem, setCurrentItem] = useState(0);
    const wrapperRef = useRef(null);
+   const { data: session, status } = useSession();
+
+   if (status === "loading") {
+      return (
+         <div className="min-h-screen flex items-center justify-center">
+            <p className="text-gray-500">Loading...</p>
+         </div>
+      );
+   }
 
    const pulldownLinks = [
       {
-         label: "Dashboard",
-         path: "/dashboard",
+         label: "Admin Dashboard",
+         path: "/admin",
          admin: true,
          icon: LuLayoutDashboard,
          description: "Quick overview of all basic metrics and settings"
       },
       {
-         label: "Metrics and analytics",
-         path: "/metrics-and-analytics",
+         label: "Editor Dashboard",
+         path: "/editor",
          moderator: true,
          icon: LuLayoutDashboard,
          description: "Detailed analytic data reviews management"
@@ -48,70 +58,71 @@ export default function PulldownTraveling({ session }) {
       }
    ];
 
-   useEffect(() => {
-      window.addEventListener("keydown", handleKeyDown);
-      return () => {
-         window.removeEventListener("keydown", handleKeyDown);
-      };
-   });
+   //  useEffect(() => {
+   //     window.addEventListener("keydown", handleKeyDown);
+   //     return () => {
+   //        window.removeEventListener("keydown", handleKeyDown);
+   //     };
+   //  });
 
-   useEffect(() => {
-      function handleClickOutside(event) {
-         if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-            setIsOpen(false);
-         }
-      }
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-         document.removeEventListener("mousedown", handleClickOutside);
-      };
-   }, []);
+   //  useEffect(() => {
+   //     function handleClickOutside(event) {
+   //        if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+   //           setIsOpen(false);
+   //        }
+   //     }
+   //     document.addEventListener("mousedown", handleClickOutside);
+   //     return () => {
+   //        document.removeEventListener("mousedown", handleClickOutside);
+   //     };
+   //  }, []);
 
-   const handleKeyDown = (e) => {
-      if (isOpen) {
-         e.preventDefault();
-         switch (e.keyCode) {
-            case 40: // down
-               if (currentItem === pulldownLinks.length - 1) {
-                  setCurrentItem(0);
-               } else {
-                  if (pulldownLinks[currentItem + 1]?.separator) {
-                     setCurrentItem(currentItem + 2);
-                  } else {
-                     setCurrentItem(currentItem + 1);
-                  }
-               }
-               break;
-            case 38: // up
-               if (currentItem === 0) {
-                  setCurrentItem(pulldownLinks.length - 1);
-               } else {
-                  if (pulldownLinks[currentItem - 1]?.separator) {
-                     setCurrentItem(currentItem - 2);
-                  } else {
-                     setCurrentItem(currentItem - 1);
-                  }
-               }
-               break;
-            case 27: // esc
-               setCurrentItem(1);
-               setIsOpen(false);
-               break;
-            default:
-               break;
-         }
-      }
-   };
+   //  const handleKeyDown = (e) => {
+   //     if (isOpen) {
+   //        //  e.preventDefault();
+   //        switch (e.keyCode) {
+   //           case 40: // down
+   //              if (currentItem === pulldownLinks.length - 1) {
+   //                 setCurrentItem(0);
+   //              } else {
+   //                 if (pulldownLinks[currentItem + 1]?.separator) {
+   //                    setCurrentItem(currentItem + 2);
+   //                 } else {
+   //                    setCurrentItem(currentItem + 1);
+   //                 }
+   //              }
+   //              break;
+   //           case 38: // up
+   //              if (currentItem === 0) {
+   //                 setCurrentItem(pulldownLinks.length - 1);
+   //              } else {
+   //                 if (pulldownLinks[currentItem - 1]?.separator) {
+   //                    setCurrentItem(currentItem - 2);
+   //                 } else {
+   //                    setCurrentItem(currentItem - 1);
+   //                 }
+   //              }
+   //              break;
+   //           case 27: // esc
+   //              setCurrentItem(1);
+   //              setIsOpen(false);
+   //              break;
+   //           default:
+   //              break;
+   //        }
+   //     }
+   //  };
 
    return (
       <div className="relative inline-flex">
-         <button
-            className="inline-flex items-center justify-center h-10 gap-2 px-5 text-sm font-medium tracking-wide text-white transition duration-300 rounded whitespace-nowrap bg-emerald-500 hover:bg-emerald-600 focus:bg-emerald-700 focus-visible:outline-none disabled:cursor-not-allowed"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-expanded={isOpen ? "true" : "false"}
-            ref={wrapperRef}
-         >
-            {/* <span>Choose one</span>
+         {status === "authenticated" ? (
+            <button
+               className="inline-flex items-center justify-center h-10 gap-2 px-5 text-sm font-medium tracking-wide text-white transition duration-300 rounded whitespace-nowrap bg-emerald-500 hover:bg-emerald-600 focus:bg-emerald-700 focus-visible:outline-none disabled:cursor-not-allowed cursor-pointer"
+               onClick={() => setIsOpen(!isOpen)}
+               aria-expanded={isOpen ? "true" : "false"}
+               ref={wrapperRef}
+            >
+               {/* <span>Choose one</span>
             <span className="relative only:-mx-5">
                <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -128,23 +139,24 @@ export default function PulldownTraveling({ session }) {
                   />
                </svg>
             </span> */}
-            <a
-               href="#"
-               className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-white"
-            >
-               <img
-                  src="https://i.pravatar.cc/40?img=35"
-                  alt="user name"
-                  title="user name"
-                  width="40"
-                  height="40"
-                  className="max-w-full rounded-full"
-               />
-               <span className="absolute bottom-0 right-0 inline-flex items-center justify-center gap-1 rounded-full border-2 border-white bg-pink-500 p-1 text-sm text-white">
-                  <span className="sr-only"> 7 new emails </span>
+               <span className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-white">
+                  <img
+                     //  src="https://i.pravatar.cc/40?img=35"
+                     src={session?.user?.avatar}
+                     alt="user name"
+                     title="user name"
+                     width="40"
+                     height="40"
+                     className="max-w-full rounded-full"
+                  />
+                  <span className="absolute bottom-0 right-0 inline-flex items-center justify-center gap-1 rounded-full border-2 border-white bg-pink-500 p-1 text-sm text-white">
+                     <span className="sr-only"> 7 new emails </span>
+                  </span>
                </span>
-            </a>
-         </button>
+            </button>
+         ) : (
+            <a href="/accounts/logon">Login</a>
+         )}
          {/* <ul
             className={`${
                isOpen ? "flex" : "hidden"
@@ -246,6 +258,23 @@ export default function PulldownTraveling({ session }) {
                      </li>
                   );
                })}
+            <li>
+               <button
+                  onClick={() => {
+                     console.log("Logging out...");
+                     signOut({ callbackUrl: "/accounts/logon" });
+                  }}
+                  className="flex w-full items-start gap-2 p-2 px-5 text-left text-red-500 transition-colors duration-300 hover:bg-red-50 hover:text-red-600 focus:bg-red-50 focus:text-red-600 cursor-pointer"
+               >
+                  <LuSettings className="w-5 h-5 mt-1 flex-shrink-0" />
+                  <span className="flex flex-col gap-1 overflow-hidden whitespace-nowrap">
+                     <span className="leading-5 truncate">Logout</span>
+                     <span className="text-sm whitespace-normal opacity-70">
+                        Sign out from your account
+                     </span>
+                  </span>
+               </button>
+            </li>
          </ul>
       </div>
    );

@@ -1,8 +1,10 @@
+import Role_Comps from "./_components/role-recharts";
+
 export default function AdminPage() {
-    return (
+   return (
       <>
-        <p>Admin Page</p>
+         <p>Admin Page</p>
+         <Role_Comps />
       </>
-    );
-  }
-  
+   );
+}

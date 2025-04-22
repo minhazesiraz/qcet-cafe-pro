@@ -8,6 +8,7 @@ export const credentialsLogon = async (formData) => {
          email: formData.get("email"),
          password: formData.get("password"),
          redirect: false
+         //  callbackUrl: "/"
       });
 
       return response;

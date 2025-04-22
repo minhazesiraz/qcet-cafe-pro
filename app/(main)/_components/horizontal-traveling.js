@@ -17,7 +17,7 @@ export default function HorizontalTraveling() {
       );
    }
 
-   const user = session?.user;
+   //  const user = session?.user;
 
    const horizontalLinks = [
       { name: "Blogs", href: "/blogs" },
@@ -120,7 +120,7 @@ export default function HorizontalTraveling() {
                   </ul>
                   <div className="ml-auto flex items-center px-6 lg:ml-0 lg:p-0">
                      {/*        <!-- Avatar --> */}
-                     {user ? (
+                     {/* {status === "authenticated" ? (
                         // <a
                         //    href="#"
                         //    className="relative inline-flex h-10 w-10 items-center justify-center rounded-full text-white"
@@ -137,10 +137,11 @@ export default function HorizontalTraveling() {
                         //       <span className="sr-only"> 7 new emails </span>
                         //    </span>
                         // </a>
-                        <PulldownTraveling session={session} />
+                        <PulldownTraveling />
                      ) : (
-                        <p>Login</p>
-                     )}
+                        <a href="/accounts/logon">Login</a>
+                     )} */}
+                     <PulldownTraveling />
                      {/*        <!-- End Avatar --> */}
                   </div>
                </nav>

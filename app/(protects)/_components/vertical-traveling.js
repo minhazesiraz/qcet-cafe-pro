@@ -1,10 +1,11 @@
 "use client";
 
 import { hasAccess } from "@/lib/permissions";
+import { getUsers } from "@/queries/users-qrs";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
    LuBell,
    LuFolder,
@@ -18,6 +19,15 @@ import {
 export default function VerticalTraveling() {
    const [isSideNavOpen, setIsSideNavOpen] = useState(false);
    const { data: session, status } = useSession();
+   const [users, setUsers] = useState([]);
+
+   useEffect(() => {
+      const fetchUsers = async () => {
+         const res = await getUsers();
+         setUsers(res);
+      };
+      fetchUsers();
+   }, []);
 
    if (status === "loading") {
       return (
@@ -29,28 +39,29 @@ export default function VerticalTraveling() {
 
    const verticalLinks = [
       {
-         label: "Dashboard",
-         path: "/dashboard",
+         label: "Admin Dashboard",
+         path: "/admin",
          admin: true,
          icon: LuLayoutDashboard
       },
       {
-         label: "Messages",
-         path: "/messages",
+         label: "Editor Dashboard",
+         path: "/editor",
          moderator: true,
          icon: LuMessageSquare,
          badge: 2
       },
       {
-         label: "Team Members",
-         path: "/team",
+         label: "New Post",
+         path: "/editor/new-post",
+         moderator: true,
          icon: LuUsers
       },
       {
-         label: "Tasks",
-         path: "/tasks",
+         label: "Users Table",
+         path: "/admin/users-table",
          icon: LuListTodo,
-         badge: 7
+         badge: users.length
       },
       {
          label: "Notifications",

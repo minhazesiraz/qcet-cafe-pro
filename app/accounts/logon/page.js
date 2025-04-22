@@ -6,7 +6,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import OnlinePlatforms from "../_components/online-platforms";
 
 export default function LogonPage() {
